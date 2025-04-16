@@ -15,7 +15,7 @@ public class Main {
         UsuarioModel userConnected = null;
 
         Connection conn = null;
-        String urlConnection = "jdbc:sqlite:database.sqlite";
+        String urlConnection = "jdbc:sqlite:databaseecommerce.sqlite";
 
         try {
             conn = DriverManager.getConnection(urlConnection);
@@ -67,20 +67,36 @@ public class Main {
                         senha = scanner.nextLine();
                     }
 
-                    UsuarioModel usuario = new UsuarioModel(email, nome, senha);
+                    UsuarioModel usuario = new UsuarioModel(nome, email, senha);
                     usuarioRepository.save(usuario);
                     userConnected = usuario;
                 }
                 if (opcao == 2) {
-                    String email, senha;
-                    System.out.print("Informe seu email: ");
-                    email = scanner.next();
-                    System.out.print("Informe sua senha: ");
-                    senha = scanner.next();
+                    String email = "", senha = "";
+                    scanner.nextLine();
+
+                    while (email.trim().isEmpty()) {
+                        System.out.print("Informe o email: ");
+                        email = scanner.nextLine();
+                    }
+
+                    while (senha.trim().isEmpty()) {
+                        System.out.print("Informe a senha: ");
+                        senha = scanner.nextLine();
+                    }
+
+                    UsuarioModel user = usuarioRepository.findByEmailAndPassowrd(email, senha);
+                    if (user == null) {
+                        System.out.println("Usuário não encotrado");
+                    }
+
+                    if (user != null) {
+                        userConnected = user;
+                        System.out.println("Usuário conectado com sucesso");
+                    }
                 }
             }
 
-            opcao = 3;
         }
     }
 }

@@ -1,5 +1,6 @@
 package org.example.models;
 
+
 import java.sql.Date;
 
 public class EntityModel {
