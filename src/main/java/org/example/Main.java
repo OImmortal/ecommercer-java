@@ -9,15 +9,13 @@ import java.sql.SQLException;
 import java.sql.SQLOutput;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         UsuarioRepository usuarioRepository = null;
         UsuarioModel userConnected = null;
 
         Connection conn = null;
-        String urlConnection = "jdbc:sqlite:database.sqlite";
+        String urlConnection = "jdbc:sqlite:databaseecommerce.sqlite";
 
         try {
             conn = DriverManager.getConnection(urlConnection);
@@ -40,6 +38,7 @@ public class Main {
             System.out.println("====================================");
             System.out.println("===========Loja Bem Legal===========");
             System.out.println("====================================\n\n");
+
             if (userConnected == null) {
 
                 System.out.println("1 - Criar Usuário");

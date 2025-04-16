@@ -4,6 +4,7 @@ import org.example.models.UsuarioModel;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Optional;
 
 public class UsuarioRepository implements IEntityRepository<UsuarioModel> {
     private final Connection connection;
@@ -32,7 +33,7 @@ public class UsuarioRepository implements IEntityRepository<UsuarioModel> {
 
     @Override
     public void delete(UsuarioModel entity) {
-        UsuarioModel user = findById(entity.getId());
+        UsuarioModel user = returnModelById(entity.getId());
         if (user == null) return;
         String query = "DELETE FROM users WHERE id = ?";
         try {
@@ -49,7 +50,11 @@ public class UsuarioRepository implements IEntityRepository<UsuarioModel> {
     }
 
     @Override
-    public UsuarioModel findById(int id) {
+    public Optional<UsuarioModel> findById(int id) {
+        return Optional.empty();
+    }
+
+    public UsuarioModel returnModelById(int id) {
         String query = "SELECT * FROM users WHERE id = ?";
         UsuarioModel entity = null;
         try {

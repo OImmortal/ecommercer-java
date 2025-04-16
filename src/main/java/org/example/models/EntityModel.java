@@ -1,7 +1,7 @@
 package org.example.models;
 
+
 import java.sql.Date;
-import java.time.LocalDateTime;
 
 public class EntityModel {
     private int id;
@@ -27,8 +27,8 @@ public class EntityModel {
 
     public int getId() {
         return id;
-    }
 
+    }
     public void setId(int id) {
         this.id = id;
     }
