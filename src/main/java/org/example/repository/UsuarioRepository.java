@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class UsuarioRepository implements IEntityRepository<UsuarioModel> {
     private final Connection connection;
@@ -44,7 +45,7 @@ public class UsuarioRepository implements IEntityRepository<UsuarioModel> {
     }
 
     @Override
-    public UsuarioModel findById(Long id) {
+    public Optional<UsuarioModel> findById(int id) {
         return null;
     }
 
