@@ -1,18 +1,28 @@
 package org.example;
 
+import org.example.controller.ProductController;
+import org.example.controller.UsuarioController;
+import org.example.models.ProductModel;
 import org.example.models.UsuarioModel;
+import org.example.repository.ProductRepository;
 import org.example.repository.UsuarioRepository;
+import org.example.view.AdminMenuView;
+import org.example.view.LoginMenuView;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         UsuarioRepository usuarioRepository = null;
         UsuarioModel userConnected = null;
+
+        ProductRepository productRepository = null;
+        ProductModel productConnected = null;
+
+
 
         Connection conn = null;
         String urlConnection = "jdbc:sqlite:databaseecommerce.sqlite";
@@ -31,72 +41,9 @@ public class Main {
             System.exit(1);
         }
 
-        Scanner scanner = new Scanner(System.in);
-        int opcao = 0;
+        UsuarioController usuarioController = new UsuarioController(usuarioRepository);
+        ProductController productController = new ProductController(productRepository);
+        usuarioController.iniciarSistema();
 
-        while(opcao != 3) {
-            System.out.println("====================================");
-            System.out.println("===========Loja Bem Legal===========");
-            System.out.println("====================================\n\n");
-
-            if (userConnected == null) {
-
-                System.out.println("1 - Criar Usuário");
-                System.out.println("2 - Acessar conta");
-                System.out.println("3 - Sair");
-                System.out.print("Informe uma opção: ");
-                opcao = scanner.nextInt();
-
-                if (opcao == 1) {
-                    String email = "", nome = "", senha = "";
-
-                    scanner.nextLine();
-
-                    while (email.trim().isEmpty()) {
-                        System.out.print("Informe o email: ");
-                        email = scanner.nextLine();
-                    }
-
-                    while (nome.trim().isEmpty()) {
-                        System.out.print("Informe o nome: ");
-                        nome = scanner.nextLine();
-                    }
-
-                    while (senha.trim().isEmpty()) {
-                        System.out.print("Informe a senha: ");
-                        senha = scanner.nextLine();
-                    }
-
-                    UsuarioModel usuario = new UsuarioModel(nome, email, senha);
-                    usuarioRepository.save(usuario);
-                    userConnected = usuario;
-                }
-                if (opcao == 2) {
-                    String email = "", senha = "";
-                    scanner.nextLine();
-
-                    while (email.trim().isEmpty()) {
-                        System.out.print("Informe o email: ");
-                        email = scanner.nextLine();
-                    }
-
-                    while (senha.trim().isEmpty()) {
-                        System.out.print("Informe a senha: ");
-                        senha = scanner.nextLine();
-                    }
-
-                    UsuarioModel user = usuarioRepository.findByEmailAndPassowrd(email, senha);
-                    if (user == null) {
-                        System.out.println("Usuário não encotrado");
-                    }
-
-                    if (user != null) {
-                        userConnected = user;
-                        System.out.println("Usuário conectado com sucesso");
-                    }
-                }
-            }
-
-        }
     }
 }

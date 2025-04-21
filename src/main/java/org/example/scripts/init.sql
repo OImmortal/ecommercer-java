@@ -1,8 +1,16 @@
 CREATE TABLE IF NOT EXISTS users (
-    id INTEGER AUTOINCREMENT PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     nome TEXT NOT NULL,
     email TEXT NOT NULL,
     senha TEXT NOT NULL,
-    createAt date not null,
-    updateAt date not null
-)
+    createdAt DATE NOT NULL,
+    updatedAt DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    preco DOUBLE NOT NULL,
+    createdAt DATE NOT NULL,
+    updatedAt DATE NOT NULL
+);

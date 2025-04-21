@@ -22,5 +22,12 @@
             <version>3.45.2.0</version>
         </dependency>
 
+        <!-- SLF4J + Logback -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.12</version>
+        </dependency>
+
     </dependencies>
 </project>

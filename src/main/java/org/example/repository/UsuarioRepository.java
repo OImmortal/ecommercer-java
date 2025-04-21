@@ -73,7 +73,7 @@ public class UsuarioRepository implements IEntityRepository<UsuarioModel> {
         return entity;
     }
 
-    public UsuarioModel findByEmailAndPassowrd(String email, String password) {
+    public UsuarioModel findByEmailAndPassword(String email, String password) {
         String query = "SELECT * FROM users WHERE email = ? AND senha = ?";
         UsuarioModel entity = null;
         try {
