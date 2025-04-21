@@ -18,14 +18,19 @@ public class ProductRepository implements IEntityRepository<ProductModel> {
         this.connection = connection;
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
+
     @Override
     public void save(ProductModel produto) {
-        String query = "INSERT INTO products VALUES (?, ?, ?)";
+        String query = "INSERT INTO products (nome, preco, createdAt, updatedAt) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement stmt = this.connection.prepareStatement(query);
-            stmt.setInt(1, produto.getId());
-            stmt.setString(2, produto.getNome());
-            stmt.setDouble(3, produto.getPreco());
+            stmt.setString(1, produto.getNome());
+            stmt.setDouble(2, produto.getPreco());
+            stmt.setDate(3, produto.getCreatedAt());
+            stmt.setDate(4, produto.getUpdatedAt());
             stmt.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -95,8 +100,8 @@ public class ProductRepository implements IEntityRepository<ProductModel> {
             while (resultSet.next()) {
                 ProductModel product = new ProductModel(
                         resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getDouble("price")
+                        resultSet.getString("nome"),
+                        resultSet.getDouble("preco")
                 );
                 products.add(product);
             }

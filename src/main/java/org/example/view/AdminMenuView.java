@@ -7,73 +7,75 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-
 public class AdminMenuView {
-    private static final Scanner scanner = new Scanner(System.in);
-    static ProductRepository productRepository;
+    private final Scanner scanner;
 
-    public static void AdminMenu() {
 
-        int option = 0;
+    public AdminMenuView(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
-        do{
-            System.out.println("\n--- MENU ADMINISTRATIVO ---");
-            System.out.println("1 - Cadastrar novo produto");
-            System.out.println("2 - Listar todos os produtos");
-            System.out.println("3 - Listar produtos por ID");
-            System.out.println("4 - Deletar produto por ID");
-            System.out.println("5 - Sair do menu administrativo");
+    public int showMenu() {
+        System.out.println("\n--- MENU ADMINISTRATIVO ---");
+        System.out.println("1 - Cadastrar novo produto");
+        System.out.println("2 - Listar todos os produtos");
+        System.out.println("3 - Listar produtos por ID");
+        System.out.println("4 - Deletar produto por ID");
+        System.out.println("5 - Sair do menu administrativo");
+        System.out.print("Escolha: ");
+        return scanner.nextInt();
+    }
 
-            option= scanner.nextInt();
+    public void casdastrarProduto(ProductRepository productRepository) {
+        scanner.nextLine();
+        System.out.print("Nome do produto: ");
+        String nomeProduto = scanner.nextLine();
 
-            switch (option) {
-                case 1:
-                    scanner.nextLine();
-                    System.out.print("Nome do produto: ");
-                    String nomeProduto = scanner.nextLine();
+        System.out.print("Preço do produto: ");
+        double precoProduto = scanner.nextDouble();
 
-                    System.out.print("Preço do produto: ");
-                    double precoProduto = scanner.nextDouble();
+        ProductModel produto = new ProductModel(nomeProduto, precoProduto);
+            productRepository.save(produto);
+            System.out.println("Produto adicionado com sucesso!");
+    }
 
-                    ProductModel produto = new ProductModel(nomeProduto, precoProduto);
-                    productRepository.save(produto);
-                    System.out.println("Produto adicionado com sucesso!");
-                    break;
+    public void listarProdutos(ProductRepository productRepository) {
+        List<ProductModel> produtos = productRepository.findAll();
 
-                case 2:
-                    List<ProductModel> produtos = productRepository.findAll();
-                    System.out.println("\n--- Produtos cadastrados ---");
-                    for (ProductModel p : produtos) {
-                        System.out.println(p.getId() + " - " + p.getNome() + " - R$" + p.getPreco());
-                    }
-                    break;
-
-                case 3:
-                    System.out.println("Digite o id do produto: ");
-                    int id = Integer.parseInt(scanner.nextLine());
-
-                    Optional<ProductModel> IDprodutos = productRepository.findById(id);
-                    if (IDprodutos.isPresent()) {
-                        System.out.println("\n--- Produtos cadastrados ---");
-                        System.out.println(IDprodutos.get().getNome() + " - " + IDprodutos.get().getPreco());
-                    }
-                    break;
-
-                case 4:
-                    System.out.println("Digite o id do produto a ser Deletado: ");
-                    id = Integer.parseInt(scanner.nextLine());
-                    Optional<ProductModel> IDproduto = productRepository.findById(id);
-                    if (IDproduto.isPresent()) {
-                        productRepository.delete(IDproduto.get());
-                        System.out.println("Produto deletado com sucesso!");
-                    }else{
-                        System.out.println("Produto não encontrado!");
-                    }
-
-                default:
-                    throw new IllegalStateException("Unexpected value: " + option);
+        if(produtos.isEmpty()) {
+            System.out.println("\n--- Nenhum produto encontrado ---");
+        }else {
+            System.out.println("\n--- Produtos cadastrados ---");
+            for (ProductModel p : produtos) {
+                System.out.println(p.getId() + " - " + p.getNome() + " - R$" + p.getPreco());
             }
+        }
+    }
 
-        }while(option != 5);
+    public void BuscaPorId(ProductRepository productRepository) {
+        scanner.nextLine();
+        System.out.println("Digite o id do produto: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        Optional<ProductModel> IDprodutos = productRepository.findById(id);
+        if (IDprodutos.isPresent()) {
+            System.out.println("\n--- Produtos cadastrados ---");
+            System.out.println(IDprodutos.get().getNome() + " - " + IDprodutos.get().getPreco());
+        }else{
+            System.out.println("\n--- Nenhum produto encontrado com o id ---");
+        }
+    }
+
+    public void deletarProduto(ProductRepository productRepository) {
+        scanner.nextLine();
+        System.out.println("Digite o id do produto a ser Deletado: ");
+        int id = Integer.parseInt(scanner.nextLine());
+        Optional<ProductModel> IDproduto = productRepository.findById(id);
+        if (IDproduto.isPresent()) {
+            productRepository.delete(IDproduto.get());
+            System.out.println("Produto deletado com sucesso!");
+        }else{
+            System.out.println("Produto não encontrado!");
+        }
     }
 }

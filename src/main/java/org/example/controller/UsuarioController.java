@@ -1,60 +1,46 @@
 package org.example.controller;
 
 import org.example.models.UsuarioModel;
-import org.example.repository.ProductRepository;
 import org.example.repository.UsuarioRepository;
-import org.example.view.AdminMenuView;
 import org.example.view.LoginMenuView;
-
-import java.util.Scanner;
 
 public class UsuarioController {
     private final UsuarioRepository usuarioRepository;
+    private final LoginMenuView loginMenuView;
 
-    public UsuarioController(UsuarioRepository usuarioRepository) {
+    public UsuarioController(UsuarioRepository usuarioRepository, LoginMenuView loginMenuView) {
         this.usuarioRepository = usuarioRepository;
+        this.loginMenuView = loginMenuView;
     }
 
     public void iniciarSistema() {
-        Scanner scanner = new Scanner(System.in);
-        UsuarioModel userConnected = null;
-        int opcao = 0;
+        boolean continuar = true;
 
-        do {
-            System.out.println("====================================");
-            System.out.println("===========Loja Bem Legal===========");
-            System.out.println("====================================\n");
+        System.out.println("====================================");
+        System.out.println("===========Loja Bem Legal===========");
+        System.out.println("====================================\n");
 
-            if (userConnected == null) {
-                opcao = LoginMenuView.ShowMenu();
-
-                switch (opcao) {
-                    case 1 -> {
-                        UsuarioModel usuario = LoginMenuView.CreateUsuario();
-                        usuarioRepository.save(usuario);
-                        userConnected = usuario;
-                    }
-
-                    case 2 -> {
-                        LoginMenuView.setUsuarioRepository(usuarioRepository);
-                        UsuarioModel user = LoginMenuView.AcessUsuario();
-                        if (user == null) {
-                            System.out.println("Usuário não encontrado");
-                        } else {
-                            userConnected = user;
-                            System.out.println("Usuário conectado com sucesso");
-                        }
-                    }
-
-                    case 3 -> {
-                        LoginMenuView.setUsuarioRepository(usuarioRepository);
-                        LoginMenuView.LoginAdmin();
-                    }
-
-                    case 4 -> System.out.println("Encerrando o sistema...");
-                    default -> System.out.println("Opção inválida!");
+        while (continuar) {
+            int opcao = loginMenuView.showMenu();
+            switch (opcao) {
+                case 1 -> {
+                    UsuarioModel novo = loginMenuView.getUsuarioCadastro();
+                    usuarioRepository.save(novo);
                 }
+                case 2 -> {
+                    UsuarioModel login = loginMenuView.getLoginInfo();
+                    UsuarioModel user = usuarioRepository.findByEmailAndPassword(login.getEmail(), login.getSenha());
+                    if (user != null) {
+                        System.out.println("Login bem-sucedido: " + user.getNome());
+                        continuar = false;
+                    } else {
+                        System.out.println("Usuário ou senha inválidos.");
+                    }
+                }
+                case 3 -> System.out.println("Acesso ao modo admin (função futura)");
+                case 4 -> continuar = false;
+                default -> System.out.println("Opção inválida.");
             }
-        } while (userConnected == null && opcao != 4);
+        }
     }
 }

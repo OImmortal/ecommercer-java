@@ -1,85 +1,49 @@
 package org.example.view;
 
 import org.example.models.UsuarioModel;
-import org.example.repository.UsuarioRepository;
 
 import java.util.Scanner;
 
 public class LoginMenuView {
-    private static final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
 
-    static UsuarioRepository usuarioRepository;
+    public LoginMenuView(Scanner scanner) {
+        this.scanner = scanner;
+    }
 
-    public static int ShowMenu() {
-        System.out.println("1 - Criar Usuário");
-        System.out.println("2 - Acessar conta");
-        System.out.println("3 - Login Administrativo");
-        System.out.println("4 - Sair");
-        System.out.print("Informe uma opção: ");
+    public int showMenu() {
+        System.out.println("1 - Cadastrar usuário");
+        System.out.println("2 - Fazer login");
+        System.out.println("3 - Sair");
+        System.out.print("Escolha: ");
         return scanner.nextInt();
     }
 
-    public static UsuarioModel CreateUsuario() {
-        String email = "", nome = "", senha = "";
-
-        scanner.nextLine();
-
-        while (email.trim().isEmpty()) {
-            System.out.print("Informe o email: ");
-            email = scanner.nextLine();
-        }
-
-        while (nome.trim().isEmpty()) {
-            System.out.print("Informe o nome: ");
-            nome = scanner.nextLine();
-        }
-
-        while (senha.trim().isEmpty()) {
-            System.out.print("Informe a senha: ");
-            senha = scanner.nextLine();
-        }
-
-        return new UsuarioModel(email, nome, senha);
+    public int showMenuOption() {
+        System.out.println("1 - Usuario");
+        System.out.println("2 - Administrador");
+        System.out.println("3 - Sair");
+        System.out.print("Escolha: ");
+        return scanner.nextInt();
     }
 
-    public static UsuarioModel AcessUsuario() {
-        String email = "", senha = "";
-        scanner.nextLine();
-
-        while (email.trim().isEmpty()) {
-            System.out.print("Informe o email: ");
-            email = scanner.nextLine();
-        }
-
-        while (senha.trim().isEmpty()) {
-            System.out.print("Informe a senha: ");
-            senha = scanner.nextLine();
-        }
-
-        return usuarioRepository.findByEmailAndPassword(email, senha);
+    public UsuarioModel getUsuarioCadastro() {
+        System.out.print("Nome: ");
+        scanner.nextLine(); // limpar buffer
+        String nome = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+        System.out.print("Senha: ");
+        String senha = scanner.nextLine();
+        return new UsuarioModel(nome, email, senha);
     }
 
-    public static void setUsuarioRepository(UsuarioRepository repository) {
-        usuarioRepository = repository;
-    }
-
-    public static void LoginAdmin() {
-        String email = "", senha = "";
-        scanner.nextLine();
-
-        while (email.trim().isEmpty()) {
-            System.out.println("Digite o email de administrador: ");
-            email = scanner.nextLine();
-        }
-
-        while (senha.trim().isEmpty()) {
-            System.out.println("Digite o senha de administrador: ");
-            senha = scanner.nextLine();
-        }
-
-        if (email.equals("admin@admin") && senha.equals("admin123")) {
-            AdminMenuView.AdminMenu();
-        }
-        System.out.println("Credenciais Invalidas!");
+    public UsuarioModel getLoginInfo() {
+        System.out.print("Email: ");
+        scanner.nextLine(); // limpar buffer
+        String email = scanner.nextLine();
+        System.out.print("Senha: ");
+        String senha = scanner.nextLine();
+        return new UsuarioModel("", email, senha); // Nome vazio para comparação
     }
 }
