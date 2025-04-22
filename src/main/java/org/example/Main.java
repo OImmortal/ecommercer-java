@@ -5,9 +5,11 @@ import org.example.controller.UsuarioController;
 import org.example.controller.ProductController;
 import org.example.repository.UsuarioRepository;
 import org.example.repository.ProductRepository;
+import org.example.repository.VendaRepository;
 import org.example.view.AdminMenuView;
 import org.example.view.LoginMenuView;
 import org.example.view.ProductMenuView;
+import org.example.view.VendaMenuView;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,7 +19,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Connection conn = null;
-        String url = "jdbc:sqlite:databaseecommerce.sqlite";
+        String url = "jdbc:sqlite:ecommerce.sqlite";
 
         try {
             conn = DriverManager.getConnection(url);
@@ -32,6 +34,7 @@ public class Main {
         // Repositórios
         UsuarioRepository usuarioRepository = new UsuarioRepository(conn);
         ProductRepository productRepository = new ProductRepository(conn);
+        VendaRepository vendaRepository = new VendaRepository(conn, productRepository);
 
 
 
@@ -39,10 +42,11 @@ public class Main {
         LoginMenuView loginMenuView = new LoginMenuView(scanner);
         ProductMenuView productMenuView = new ProductMenuView(scanner);
         AdminMenuView adminMenuView = new AdminMenuView(scanner);
+        VendaMenuView vendaMenuView = new VendaMenuView(scanner, productRepository);
 
         // Controllers
         UsuarioController usuarioController = new UsuarioController(usuarioRepository, loginMenuView);
-        ProductController productController = new ProductController(productRepository, productMenuView);
+        ProductController productController = new ProductController(productRepository, productMenuView, vendaMenuView, vendaRepository);
         AdminController adminController = new AdminController(productRepository, adminMenuView);
 
         // Executa sistema
@@ -52,7 +56,7 @@ public class Main {
             switch (opcaoLogin) {
                 case 1-> {
                     usuarioController.iniciarSistema();
-                    productController.iniciarCompra();
+                    productController.iniciarCompra(usuarioController.getUserConnected());
                 }
                 case 2 -> {
                     System.out.print("Digite o email de admin: ");

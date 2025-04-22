@@ -3,8 +3,8 @@ package org.example.models;
 import java.sql.Date;
 import java.util.List;
 
-public class VendaModel {
-    private int id;
+public class VendaModel extends EntityModel {
+
     private UsuarioModel usuario;
     private List<ProductModel> produtos;
     private String formaPagamento;
@@ -17,12 +17,23 @@ public class VendaModel {
         this.valorTotal = valorTotal;
     }
 
-    public int getId() {
-        return id;
+    public VendaModel(int id, Date createdAt, Date updatedAt, UsuarioModel usuario, List<ProductModel> produtos, String formaPagamento, double valorTotal) {
+        super(id, createdAt, updatedAt);
+        this.usuario = usuario;
+        this.produtos = produtos;
+        this.formaPagamento = formaPagamento;
+        this.valorTotal = valorTotal;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public VendaModel(int id, UsuarioModel usuario, List<ProductModel> produtos, String formaPagamento, double valorTotal) {
+        super(id);
+        this.usuario = usuario;
+        this.produtos = produtos;
+        this.formaPagamento = formaPagamento;
+        this.valorTotal = valorTotal;
+    }
+
+    public VendaModel() {
     }
 
     public UsuarioModel getUsuario() {
@@ -56,5 +67,4 @@ public class VendaModel {
     public void setValorTotal(double valorTotal) {
         this.valorTotal = valorTotal;
     }
-
 }

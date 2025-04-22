@@ -12,7 +12,8 @@ public class ProductMenuView {
     public int showMenu() {
         System.out.println("1 - Ver produtos");
         System.out.println("2 - Buscar produto por ID");
-        System.out.println("3 - Sair");
+        System.out.println("3 - Realizar venda");
+        System.out.println("4 - Sair");
         System.out.print("Escolha: ");
         return scanner.nextInt();
     }

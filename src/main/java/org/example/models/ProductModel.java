@@ -24,6 +24,9 @@ public class ProductModel extends EntityModel {
         this.preco = preco;
     }
 
+    public ProductModel() {
+    }
+
     public String getNome() {
         return nome;
     }

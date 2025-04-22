@@ -29,7 +29,8 @@ public class UsuarioModel extends EntityModel{
         this.senha = senha;
     }
 
-
+    public UsuarioModel() {
+    }
 
     public String getNome() {
         return nome;

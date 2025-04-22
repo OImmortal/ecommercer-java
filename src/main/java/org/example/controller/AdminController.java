@@ -27,9 +27,6 @@ public class AdminController {
                 case 2 -> adminMenuView.listarProdutos(productRepository);
                 case 3 -> adminMenuView.BuscaPorId(productRepository);
                 case 4 -> adminMenuView.deletarProduto(productRepository);
-                default->{
-                    throw new IllegalStateException("Unexpected value: " + option);
-                }
             }
 
         } while (option != 5);

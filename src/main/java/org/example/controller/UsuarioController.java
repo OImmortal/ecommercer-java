@@ -7,6 +7,7 @@ import org.example.view.LoginMenuView;
 public class UsuarioController {
     private final UsuarioRepository usuarioRepository;
     private final LoginMenuView loginMenuView;
+    private UsuarioModel userConnected;
 
     public UsuarioController(UsuarioRepository usuarioRepository, LoginMenuView loginMenuView) {
         this.usuarioRepository = usuarioRepository;
@@ -31,16 +32,21 @@ public class UsuarioController {
                     UsuarioModel login = loginMenuView.getLoginInfo();
                     UsuarioModel user = usuarioRepository.findByEmailAndPassword(login.getEmail(), login.getSenha());
                     if (user != null) {
+                        userConnected = user;
                         System.out.println("Login bem-sucedido: " + user.getNome());
                         continuar = false;
                     } else {
                         System.out.println("Usuário ou senha inválidos.");
                     }
                 }
-                case 3 -> System.out.println("Acesso ao modo admin (função futura)");
-                case 4 -> continuar = false;
+//                case 3 -> System.out.println("Acesso ao modo admin (função futura)");
+                case 3 -> continuar = false;
                 default -> System.out.println("Opção inválida.");
             }
         }
+    }
+
+    public UsuarioModel getUserConnected() {
+        return userConnected;
     }
 }
